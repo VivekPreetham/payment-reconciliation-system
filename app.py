@@ -114,22 +114,29 @@ with col2:
 # ------------------------
 st.subheader("Issue Distribution")
 
-# Minimal color palette (clean + professional)
-colors = ["#4C78A8", "#F58518", "#54A24B", "#E45756", "#B279A2"]
+# Create centered layout
+left, center, right = st.columns([1, 2, 1])
 
-fig, ax = plt.subplots(figsize=(5, 5))  # smaller size
+with center:
+    # Minimal color palette
+    colors = ["#4C78A8", "#F58518", "#54A24B", "#E45756", "#B279A2"]
 
-ax.pie(
-    issue_counts,
-    labels=issue_counts.index,
-    autopct='%1.1f%%',
-    colors=colors[:len(issue_counts)],
-    textprops={'fontsize': 10}
-)
+    # Smaller figure
+    fig, ax = plt.subplots(figsize=(4, 4))
 
-ax.set_title("Issue Share", fontsize=12)
+    ax.pie(
+        issue_counts,
+        autopct='%1.1f%%',
+        colors=colors[:len(issue_counts)],
+        textprops={'fontsize': 9}
+    )
 
-st.pyplot(fig)
+    ax.set_title("Issue Share", fontsize=11)
+
+    plt.tight_layout()
+
+    # Prevent stretching (IMPORTANT)
+    st.pyplot(fig, use_container_width=False)
 
 # ------------------------
 # FILTER SECTION
