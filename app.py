@@ -114,9 +114,20 @@ with col2:
 # ------------------------
 st.subheader("Issue Distribution")
 
-fig, ax = plt.subplots()
-ax.pie(issue_counts, labels=issue_counts.index, autopct='%1.1f%%')
-ax.set_title("Issue Share")
+# Minimal color palette (clean + professional)
+colors = ["#4C78A8", "#F58518", "#54A24B", "#E45756", "#B279A2"]
+
+fig, ax = plt.subplots(figsize=(5, 5))  # smaller size
+
+ax.pie(
+    issue_counts,
+    labels=issue_counts.index,
+    autopct='%1.1f%%',
+    colors=colors[:len(issue_counts)],
+    textprops={'fontsize': 10}
+)
+
+ax.set_title("Issue Share", fontsize=12)
 
 st.pyplot(fig)
 
@@ -157,7 +168,7 @@ st.subheader("Key Insights")
 st.write(f"Total Problematic Records: {len(issues_only)}")
 
 top_issue = issue_counts.idxmax()
-st.write(f"Most Frequent Issue: **{top_issue}**")
+st.write(f"Most Frequent: **{top_issue}**")
 
 # Financial impact (safe handling)
 if "amount_txn" in issues_only.columns:
@@ -166,4 +177,3 @@ if "amount_txn" in issues_only.columns:
     st.write(f"Highest Financial Impact: **{top_impact}**")
 
 st.markdown("---")
-st.write("This dashboard helps identify reconciliation gaps including missing records, timing differences, and financial mismatches.")
