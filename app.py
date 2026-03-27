@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # ------------------------
 # PAGE CONFIG
@@ -110,35 +109,6 @@ with col2:
     st.dataframe(issue_percent.round(2).astype(str) + " %")
 
 # ------------------------
-# PIE CHART
-# ------------------------
-st.subheader("Issue Distribution")
-
-# Create centered layout
-left, center, right = st.columns([1, 2, 1])
-
-with center:
-    # Minimal color palette
-    colors = ["#4C78A8", "#F58518", "#54A24B", "#E45756", "#B279A2"]
-
-    # Smaller figure
-    fig, ax = plt.subplots(figsize=(4, 4))
-
-    ax.pie(
-        issue_counts,
-        autopct='%1.1f%%',
-        colors=colors[:len(issue_counts)],
-        textprops={'fontsize': 9}
-    )
-
-    ax.set_title("Issue Share", fontsize=11)
-
-    plt.tight_layout()
-
-    # Prevent stretching (IMPORTANT)
-    st.pyplot(fig, use_container_width=False)
-
-# ------------------------
 # FILTER SECTION
 # ------------------------
 st.subheader("Filter Issues")
@@ -168,16 +138,15 @@ issues_only = result[result["issue_type"] != "Matched"]
 st.dataframe(issues_only, use_container_width=True)
 
 # ------------------------
-# INSIGHTS (HIGH IMPACT)
+# INSIGHTS
 # ------------------------
 st.subheader("Key Insights")
 
 st.write(f"Total Problematic Records: {len(issues_only)}")
 
 top_issue = issue_counts.idxmax()
-st.write(f"Most Frequent: **{top_issue}**")
+st.write(f"Most Frequent Issue: **{top_issue}**")
 
-# Financial impact (safe handling)
 if "amount_txn" in issues_only.columns:
     impact = issues_only.groupby("issue_type")["amount_txn"].sum().abs()
     top_impact = impact.idxmax()
